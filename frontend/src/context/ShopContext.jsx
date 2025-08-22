@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import productsData from "../components/FixedData";
+import { toast } from "react-toastify"; 
 
 export const ShopContext = createContext();
 
@@ -16,8 +17,10 @@ const ShopContextProvider = (props) => {
     setCart((prev) => {
       const existing = prev[key];
       if (existing) {
+        toast.info("Quantity updated in cart!");
         return { ...prev, [key]: { ...existing, qty: existing.qty + 1 } };
       }
+      toast.success("Product added to cart!");
       return { ...prev, [key]: { id: product._id, size, qty: 1 } };
     });
   };
@@ -28,6 +31,7 @@ const removeFromCart = (productId, size = null) => {
   setCart((prev) => {
     const newCart = { ...prev };
     delete newCart[key];
+    toast.error("Product removed from cart!");
     return newCart;
   });
 };
@@ -43,8 +47,10 @@ const updateQuantity = (productId, size = null, change = 1) => {
 
     if (newQty <= 0) {
       delete newCart[key]; // remove product if qty goes to 0
+      toast.error("Product removed from cart!");
     } else {
       newCart[key].qty = newQty;
+      toast.info("Quantity updated!");
     }
     return newCart;
   });
