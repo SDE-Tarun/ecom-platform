@@ -43,7 +43,7 @@ const ShoppingCart = () => {
               transition={{ duration: 0.3, delay: i * 0.1 }}
               className="col-12 col-sm-6 col-lg-4"
             >
-              <div className="card border-0 shadow-sm h-100">
+              <div className="card border-0 shadow-sm h-100 d-flex flex-column justify-content-center align-items-center text-center">
                 {/* Delete Icon */}
                 <i
                   className="bx bx-x fs-4 position-absolute top-0 end-0 m-2 c-gray cursor"
@@ -57,7 +57,7 @@ const ShoppingCart = () => {
                   className="card-img-top"
                   style={{ maxHeight: "200px", objectFit: "contain" }}
                 />
-                <div className="card-body text-start">
+                <div className="card-body text-center d-flex flex-column align-items-center justify-content-center">
                   <h5 className="card-title">{item.name}</h5>
                   {item.size && (
                     <p className="mb-1">
