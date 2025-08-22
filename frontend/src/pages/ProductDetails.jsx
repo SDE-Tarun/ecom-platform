@@ -5,6 +5,7 @@ import CollectionCard from "../components/CollectionCard";
 import HeaderDashed from "../components/HeaderDashed";
 // import FetchErrorMsg from "../components/FetchErrorMsg";
 import FetchWaitingMsg from "../components/FetchWaitingMsg";
+import { toast } from "react-toastify";
 
 
 
@@ -177,7 +178,10 @@ const ProductDetails = () => {
 												}`}
 												role="button"
 												key={i}
-												onClick={() => setActiveSize(size)}
+												onClick={() => {
+													setActiveSize(size);
+													toast.info(`Size "${size}" selected`);
+												}}
 											>
 												{size}
 											</span>
