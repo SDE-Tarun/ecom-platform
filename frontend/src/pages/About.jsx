@@ -13,18 +13,18 @@ const About = () => {
 			className="about-page text-center py-3 pt-5"
 		>
 			<div className="container">
-				<HeaderDashed head1="ABOUT" head2="MADE BY INDIA" classStyle="fw-normal fs-3" />
+				<HeaderDashed head1="ABOUT" head2="PICKSY" classStyle="fw-normal fs-3" />
 
 				<DescribedImage
 					img={mainImg}
-					imgTitle="MADE BY INDIA"
+					imgTitle="Picksy"
 					styleInLarge="column-gap-xl-4"
 					styleImg="col-xl-5"
 					styleText="col-xl-6"
 					sideText={
 						<>
 							<p>
-								Welcome to a world where the vibrant culture of India is celebrated through every purchase. <strong>MADE BY INDIA</strong> is not just an e-commerce platform, it's a movement.
+								Welcome to a world where the vibrant culture of India is celebrated through every purchase. <strong>Picksy</strong> is not just an e-commerce platform, it's a movement.
 							</p>
 							<p>
 								Our mission is to bring prosperity to Indian products and producers by offering them a stage to showcase their creativity and talent. We promote Swadeshi products that are unique, authentic, and made with love.
@@ -34,7 +34,7 @@ const About = () => {
 								We believe in Indian creativity and entrepreneurship. We're not just selling products – we're creating global recognition for Indian goods.
 							</p>
 							<p>
-								Many amazing Indian products don’t get the recognition they deserve. <strong>MADE BY INDIA</strong> aims to change that by making them available to every household.
+								Many amazing Indian products don’t get the recognition they deserve. <strong>Picksy</strong> aims to change that by making them available to every household.
 							</p>
 
 							{/* Vision section */}
@@ -47,7 +47,7 @@ const About = () => {
 									We’re more than a platform – we’re a community that celebrates Indian creativity. Whether you want traditional clothing, home decor, or Indian snacks, we’ve got something for you.
 								</p>
 								<p>
-									Each product comes with a story – a piece of Indian heritage. Support local, empower communities, and experience the magic of Made By India.
+									Each product comes with a story – a piece of Indian heritage. Support local, empower communities, and experience the magic of Picksy.
 								</p>
 							</div>
 						</>

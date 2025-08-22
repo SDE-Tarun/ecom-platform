@@ -2,7 +2,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 // Import Tooltip directly from Bootstrap
 import { Tooltip } from "bootstrap";
-import logo from "../assets/logo.png";
+import logo from "../assets/brand-logo-2.png";
 
 
 const Footer = () => {
@@ -41,7 +41,7 @@ const Footer = () => {
 							<Link to="/" className="logo text-decoration-none text-dark">
 								<img
 									src={logo}
-									alt="Made By India Logo"
+									alt="Picksy Logo"
 									className="img-fluid"
 									style={{
 										maxWidth: "180px",
@@ -87,15 +87,15 @@ const Footer = () => {
 						<div className="address col-12 col-lg text-center">
 							<h3 className="mb-3">GET IN TOUCH</h3>
 							<ul className="d-flex flex-column align-items-center align-items-lg-start ps-0 gap-2">
-								<li className="c-gray">0120-4553364</li>
-								<li className="c-gray">Address: Plot no. 99, Ecotech-3, Greater Noida</li>
+								<li className="c-gray"></li>
+								<li className="c-gray"></li>
 								<li>
 									<a
 										className="c-gray text-decoration-none hover-underline"
 										href="mailto:ahmedmaher.dev1@gmail.com"
 										title="get in touch"
 									>
-										sales@madebyindia.com
+										
 									</a>
 								</li>
 								{/* <li>
@@ -124,7 +124,7 @@ const Footer = () => {
 						data-bs-toggle="tooltip"
 						data-bs-placement="top"
 					>
-						Made By India
+						Picksy
 					</a>
 					- All Rights Reserved.
 				</div>

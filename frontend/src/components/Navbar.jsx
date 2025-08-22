@@ -2,7 +2,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Tooltip } from "bootstrap";
 import { ShopContext } from "../context/ShopContext";
-import logo from "../assets/logo.png";
+import logo from "../assets/brand-logo-2.png";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 
@@ -48,7 +48,7 @@ const Navbar = () => {
 					<Link to="/" className="logo text-decoration-none text-dark">
 						<img
 							src={logo}
-							alt="Made By India Logo"
+							alt="Picksy Logo"
 							className="img-fluid d-block"
 							style={{
 								maxWidth: "180px",
