@@ -17,7 +17,7 @@ import { ShopContext } from "../context/ShopContext";
 
 const ProductDetails = () => {
 	const {productId} = useParams();
-	const {productsData} = useContext(ShopContext);
+	const {productsData, addToCart} = useContext(ShopContext);
 	// ;
 	// useEffect(() => console.log(productId), [productId])
 	
@@ -98,8 +98,6 @@ const ProductDetails = () => {
 	// 			setLoading(false);
 	// 		});
 	// }, [productId]);
-
-
 
 
 	return (
@@ -188,7 +186,11 @@ const ProductDetails = () => {
 								</div>
 							</div>
 							{/* Add to Cart Button */}
-							<button className="addcart-btn btn rounded-0 bg-black c-white mt-4 trans-3 mb-2 py-2 px-4">
+							<button 
+							className="addcart-btn btn rounded-0 bg-black c-white mt-4 trans-3 mb-2 py-2 px-4"
+							// ⬇️ NEW: onClick pe addToCart
+              onClick={() => addToCart(productData, activeSize)}
+							>
 								ADD TO CART
 							</button>
 							{/* Product Description and Reviews */}

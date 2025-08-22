@@ -10,7 +10,7 @@ const Navbar = () => {
 	const [showMenu, setShowMenu] = useState(false);
 	const [showBorder, setShowBorder] = useState(true);
 	const [showSearchIcon, setSearchIcon] = useState(false);
-	const { setActiveSearch } = useContext(ShopContext);
+	const { setActiveSearch, getCartCount } = useContext(ShopContext);
 	const { user, logout } = useAuth();
 	const navigate = useNavigate();
 
@@ -128,12 +128,16 @@ const Navbar = () => {
 								</NavLink>
 							)}
 
-							<button className="bg-transparent border-0 position-relative">
+<Link to='/cart'>
+<button className="bg-transparent border-0 position-relative">
 								<i className="bx bx-shopping-bag fs-little-big c-gray cursor"></i>
 								<span className="bg-black d-block rounded-circle cart-icon c-white">
-									0
+									{/* 🔹 NEW: dynamic count */}
+                  {getCartCount()}
 								</span>
 							</button>
+</Link>
+							
 						</div>
 
 						<button

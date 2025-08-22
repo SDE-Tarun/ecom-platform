@@ -1,11 +1,100 @@
-import { motion } from "framer-motion"
+import { useContext } from "react";
+import { motion } from "framer-motion";
+import { ShopContext } from "../context/ShopContext";
+import { Link } from "react-router-dom";
+import HeaderDashed from "../components/HeaderDashed";
 
 const ShoppingCart = () => {
-  return (
-    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} exit={{opacity: 0}} className="shopping-cart text-center">
-      <h1>Shopping Cart</h1>
-    </motion.div>
-  )
-}
+  const { cart, productsData, currency, removeFromCart, updateQuantity } = useContext(ShopContext);
 
-export default ShoppingCart
+  // Cart me jo products add hain unki details nikalo
+  const cartItems = Object.values(cart).map((item) => {
+    const product = productsData.find((p) => p._id === item.id);
+    return {
+      ...product,
+      qty: item.qty,
+      size: item.size,
+    };
+  });
+
+  return (
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="shopping-cart container mt-5"
+    >
+      <HeaderDashed head1="Shopping" head2="Cart" />
+
+      {cartItems.length === 0 ? (
+        <div className="text-center my-5">
+          <p className="fs-4 c-gray">Your cart is empty.</p>
+          <Link to="/collection" className="btn bg-black c-white mt-3 px-4 py-2">
+            Continue Shopping
+          </Link>
+        </div>
+      ) : (
+        <div className="row g-4 justify-content-center">
+          {cartItems.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.3, delay: i * 0.1 }}
+              className="col-12 col-sm-6 col-lg-4"
+            >
+              <div className="card border-0 shadow-sm h-100">
+                {/* Delete Icon */}
+                <i
+                  className="bx bx-x fs-4 position-absolute top-0 end-0 m-2 c-gray cursor"
+                  onClick={() => removeFromCart(item._id, item.size)}
+                  title="Remove"
+                  role="button"
+                ></i>
+                <img
+                  src={item.image[0]}
+                  alt={item.name}
+                  className="card-img-top"
+                  style={{ maxHeight: "200px", objectFit: "contain" }}
+                />
+                <div className="card-body text-start">
+                  <h5 className="card-title">{item.name}</h5>
+                  {item.size && (
+                    <p className="mb-1">
+                      <strong>Size:</strong> {item.size}
+                    </p>
+                  )}
+                  {/* <p className="mb-1">
+                    <strong>Quantity:</strong> {item.qty}
+                  </p> */}
+                  {/* Quantity Controls */}
+                  <div className="d-flex align-items-center gap-2 my-2">
+                    <button
+                      className="btn btn-sm bg-light border"
+                      onClick={() => updateQuantity(item._id, item.size, -1)}
+                    >
+                      −
+                    </button>
+                    <span className="fw-bold">{item.qty}</span>
+                    <button
+                      className="btn btn-sm bg-light border"
+                      onClick={() => updateQuantity(item._id, item.size, 1)}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <p className="fw-bold fs-5 mb-0">
+                    {currency}
+                    {item.price * item.qty}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
+    </motion.section>
+  );
+};
+
+export default ShoppingCart;
