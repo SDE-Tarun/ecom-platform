@@ -11,12 +11,12 @@
 **Edit `frontend/src/config/razorpay.js`:**
 ```javascript
 export const RAZORPAY_CONFIG = {
-  KEY_ID: 'rzp_test_YOUR_ACTUAL_KEY_ID_HERE', // ⚠️ REPLACE THIS
-  KEY_SECRET: 'YOUR_ACTUAL_SECRET_KEY_HERE', // ⚠️ REPLACE THIS
+  KEY_ID: RAZORPAY_KEY_ID,
+  KEY_SECRET: RAZORPAY_KEY_SECRET, 
   STORE_NAME: 'Your Store Name',
   STORE_DESCRIPTION: 'Your Store Description',
   CURRENCY: 'INR',
-  BACKEND_URL: 'http://localhost:5000'
+  BACKEND_URL: 'http://localhost:5001'
 };
 ```
 
