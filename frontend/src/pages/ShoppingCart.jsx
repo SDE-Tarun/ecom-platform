@@ -1,11 +1,23 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ShopContext } from "../context/ShopContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HeaderDashed from "../components/HeaderDashed";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const ShoppingCart = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const { cart, productsData, currency, removeFromCart, updateQuantity } = useContext(ShopContext);
+
+  // Redirect to login if user is not authenticated
+  useEffect(() => {
+    if (!user) {
+      toast.error("Please login to view your cart!");
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   // Cart me jo products add hain unki details nikalo
   const cartItems = Object.values(cart).map((item) => {
@@ -16,6 +28,11 @@ const ShoppingCart = () => {
       size: item.size,
     };
   });
+
+  // Don't render cart if user is not logged in
+  if (!user) {
+    return null;
+  }
 
   return (
     <motion.section

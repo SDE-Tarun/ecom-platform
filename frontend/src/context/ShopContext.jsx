@@ -1,6 +1,7 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 import productsData from "../components/FixedData";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
+import { useAuth } from "./AuthContext"; 
 
 export const ShopContext = createContext();
 
@@ -10,9 +11,23 @@ const ShopContextProvider = (props) => {
     const [activeSearch, setActiveSearch] = useState(false);
     const [search, setSearch] = useState('');
 	const [cart, setCart] = useState({});
+	const { user } = useAuth();
 
-	// 🔹 NEW: Add to cart (supports size; same item increments qty)
+	// Clear cart when user logs out
+	useEffect(() => {
+		if (!user) {
+			setCart({});
+		}
+	}, [user]);
+
+	// 🔹 NEW: Add to cart (supports size; same item increments qty) - Only for logged in users
   const addToCart = (product, size = null) => {
+    // Check if user is logged in
+    if (!user) {
+      toast.error("Please login to add products to cart!");
+      return;
+    }
+
     const key = size ? `${product._id}_${size}` : `${product._id}`;
     setCart((prev) => {
       const existing = prev[key];
@@ -27,6 +42,12 @@ const ShopContextProvider = (props) => {
 
   // Add this function
 const removeFromCart = (productId, size = null) => {
+  // Check if user is logged in
+  if (!user) {
+    toast.error("Please login to manage your cart!");
+    return;
+  }
+
   const key = size ? `${productId}_${size}` : `${productId}`;
   setCart((prev) => {
     const newCart = { ...prev };
@@ -38,6 +59,12 @@ const removeFromCart = (productId, size = null) => {
 
 // New function to increase/decrease quantity
 const updateQuantity = (productId, size = null, change = 1) => {
+  // Check if user is logged in
+  if (!user) {
+    toast.error("Please login to manage your cart!");
+    return;
+  }
+
   const key = size ? `${productId}_${size}` : `${productId}`;
   setCart((prev) => {
     const newCart = { ...prev };

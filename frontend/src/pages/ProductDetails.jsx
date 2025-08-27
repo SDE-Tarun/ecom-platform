@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "boxicons/css/boxicons.min.css";
 import CollectionCard from "../components/CollectionCard";
 import HeaderDashed from "../components/HeaderDashed";
@@ -15,10 +15,13 @@ import { toast } from "react-toastify";
 
 import { motion } from "framer-motion";
 import { ShopContext } from "../context/ShopContext";
+import { useAuth } from "../context/AuthContext";
 
 const ProductDetails = () => {
 	const {productId} = useParams();
+	const navigate = useNavigate();
 	const {productsData, addToCart} = useContext(ShopContext);
+	const { user } = useAuth();
 	// ;
 	// useEffect(() => console.log(productId), [productId])
 	
@@ -190,13 +193,24 @@ const ProductDetails = () => {
 								</div>
 							</div>
 							{/* Add to Cart Button */}
-							<button 
-							className="addcart-btn btn rounded-0 bg-black c-white mt-4 trans-3 mb-2 py-2 px-4"
-							// ⬇️ NEW: onClick pe addToCart
-              onClick={() => addToCart(productData, activeSize)}
-							>
-								ADD TO CART
-							</button>
+							{user ? (
+								<button 
+								className="addcart-btn btn rounded-0 bg-black c-white mt-4 trans-3 mb-2 py-2 px-4"
+								onClick={() => addToCart(productData, activeSize)}
+								>
+									ADD TO CART
+								</button>
+							) : (
+								<button 
+								className="addcart-btn btn rounded-0 bg-gray c-white mt-4 trans-3 mb-2 py-2 px-4"
+								onClick={() => {
+									toast.info("Please login to add products to cart!");
+									navigate("/login");
+								}}
+								>
+									LOGIN TO ADD TO CART
+								</button>
+							)}
 							{/* Product Description and Reviews */}
 							<ul className="features ps-0 mt-4 border-top pt-3">
 								<li className="mb-1">100% Original product.</li>

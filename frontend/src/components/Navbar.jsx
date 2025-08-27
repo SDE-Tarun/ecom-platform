@@ -115,28 +115,46 @@ const Navbar = () => {
 										data-bs-placement="bottom"
 										role="button"
 									></i>
+
+									<Link to='/cart'>
+										<button className="bg-transparent border-0 position-relative">
+											<i className="bx bx-shopping-bag fs-little-big c-gray cursor"></i>
+											<span className="bg-black d-block rounded-circle cart-icon c-white">
+												{/* 🔹 NEW: dynamic count */}
+												{getCartCount()}
+											</span>
+										</button>
+									</Link>
 								</>
 							) : (
-								<NavLink
-									className="login-link text-deoration-none"
-									to="/login"
-									data-bs-toggle="tooltip"
-									data-bs-placement="bottom"
-									title="Login"
-								>
-									<i className="bx bx-user fs-little-big c-gray cursor"></i>
-								</NavLink>
-							)}
+								<>
+									<NavLink
+										className="login-link text-deoration-none"
+										to="/login"
+										data-bs-toggle="tooltip"
+										data-bs-placement="bottom"
+										title="Login"
+									>
+										<i className="bx bx-user fs-little-big c-gray cursor"></i>
+									</NavLink>
 
-<Link to='/cart'>
-<button className="bg-transparent border-0 position-relative">
-								<i className="bx bx-shopping-bag fs-little-big c-gray cursor"></i>
-								<span className="bg-black d-block rounded-circle cart-icon c-white">
-									{/* 🔹 NEW: dynamic count */}
-                  {getCartCount()}
-								</span>
-							</button>
-</Link>
+									<button 
+										className="bg-transparent border-0 position-relative"
+										onClick={() => {
+											toast.info("Please login to view your cart!");
+											navigate("/login");
+										}}
+										title="Login to view cart"
+										data-bs-toggle="tooltip"
+										data-bs-placement="bottom"
+									>
+										<i className="bx bx-shopping-bag fs-little-big c-gray cursor"></i>
+										<span className="bg-gray d-block rounded-circle cart-icon c-white">
+											0
+										</span>
+									</button>
+								</>
+							)}
 							
 						</div>
 
