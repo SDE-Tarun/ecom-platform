@@ -30,6 +30,9 @@ import Login from "./pages/Login";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// Import test script for Razorpay
+import './utils/testPayment.js';
+
 function App() {
 	// Get current location
 	const location = useLocation();

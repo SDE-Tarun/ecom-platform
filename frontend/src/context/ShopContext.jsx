@@ -10,13 +10,23 @@ const ShopContextProvider = (props) => {
 	const delivery_fee = 10;
     const [activeSearch, setActiveSearch] = useState(false);
     const [search, setSearch] = useState('');
-	const [cart, setCart] = useState({});
+	const [cart, setCart] = useState(() => {
+		// Load cart from localStorage on initial load
+		const savedCart = localStorage.getItem('cart');
+		return savedCart ? JSON.parse(savedCart) : {};
+	});
 	const { user } = useAuth();
+
+	// Save cart to localStorage whenever it changes
+	useEffect(() => {
+		localStorage.setItem('cart', JSON.stringify(cart));
+	}, [cart]);
 
 	// Clear cart when user logs out
 	useEffect(() => {
 		if (!user) {
 			setCart({});
+			localStorage.removeItem('cart');
 		}
 	}, [user]);
 
@@ -28,7 +38,13 @@ const ShopContextProvider = (props) => {
       return;
     }
 
-    const key = size ? `${product._id}_${size}` : `${product._id}`;
+    // Check if size is selected
+    if (!size) {
+      toast.error("Please select a size before adding to cart!");
+      return;
+    }
+
+    const key = `${product._id}_${size}`;
     setCart((prev) => {
       const existing = prev[key];
       if (existing) {
@@ -87,8 +103,56 @@ const updateQuantity = (productId, size = null, change = 1) => {
   const getCartCount = () =>
     Object.values(cart).reduce((sum, item) => sum + item.qty, 0);
 
+  // Calculate total cart value
+  const getCartTotal = () => {
+    return Object.values(cart).reduce((total, item) => {
+      const product = productsData.find(p => p._id === item.id);
+      return total + (product ? product.price * item.qty : 0);
+    }, 0);
+  };
+
+  // Buy Now function for cart
+  const buyNow = async (cartItems) => {
+    if (!user) {
+      toast.error("Please login to make a purchase!");
+      return;
+    }
+
+    if (Object.keys(cartItems).length === 0) {
+      toast.error("Your cart is empty!");
+      return;
+    }
+
+    try {
+      const totalAmount = getCartTotal();
+      const orderData = {
+        amount: totalAmount * 100, // Razorpay expects amount in paise
+        currency: "INR",
+        description: `Purchase of ${Object.keys(cartItems).length} items`,
+        orderId: `order_${Date.now()}`,
+        customerName: user.name || user.email,
+        customerEmail: user.email,
+        customerPhone: user.phone || ""
+      };
+
+      // Import and use Razorpay
+      const { initializeRazorpay } = await import('../utils/razorpay');
+      const response = await initializeRazorpay(orderData);
+      
+      if (response) {
+        toast.success("Payment successful! Order placed.");
+        // Clear cart after successful payment
+        setCart({});
+        localStorage.removeItem('cart');
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      toast.error("Payment failed. Please try again.");
+    }
+  };
+
 	const value = {
-		productsData, currency, delivery_fee, search, setSearch, activeSearch, setActiveSearch, cart, addToCart, getCartCount, removeFromCart, updateQuantity
+		productsData, currency, delivery_fee, search, setSearch, activeSearch, setActiveSearch, cart, addToCart, getCartCount, removeFromCart, updateQuantity, getCartTotal, buyNow
 	};
 	return (
 		<ShopContext.Provider value={value}>

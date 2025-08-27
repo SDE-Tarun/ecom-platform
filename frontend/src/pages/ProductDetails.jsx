@@ -16,12 +16,53 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { ShopContext } from "../context/ShopContext";
 import { useAuth } from "../context/AuthContext";
+import { initializeRazorpay } from "../utils/razorpay";
 
 const ProductDetails = () => {
 	const {productId} = useParams();
 	const navigate = useNavigate();
 	const {productsData, addToCart} = useContext(ShopContext);
 	const { user } = useAuth();
+
+	// Handle Buy Now functionality
+	const handleBuyNow = async (product, size) => {
+		if (!user) {
+			toast.error("Please login to make a purchase!");
+			navigate("/login");
+			return;
+		}
+
+		if (!size) {
+			toast.error("Please select a size before purchasing!");
+			return;
+		}
+
+		try {
+			// Create order data
+			const orderData = {
+				amount: product.price * 100, // Razorpay expects amount in paise
+				currency: "INR",
+				description: `Purchase of ${product.name} (Size: ${size})`,
+				orderId: `order_${Date.now()}`, // This should come from your backend
+				customerName: user.name || user.email,
+				customerEmail: user.email,
+				customerPhone: user.phone || ""
+			};
+
+			// Initialize Razorpay payment
+			const response = await initializeRazorpay(orderData);
+			
+			if (response) {
+				toast.success("Payment successful! Order placed.");
+				// Here you can redirect to order confirmation page
+				// navigate("/order-confirmation");
+			}
+		} catch (error) {
+			console.error("Payment error:", error);
+			toast.error("Payment failed. Please try again.");
+		}
+	};
+
 	// ;
 	// useEffect(() => console.log(productId), [productId])
 	
@@ -195,10 +236,14 @@ const ProductDetails = () => {
 							{/* Add to Cart Button */}
 							{user ? (
 								<button 
-								className="addcart-btn btn rounded-0 bg-black c-white mt-4 trans-3 mb-2 py-2 px-4"
+								className={`addcart-btn btn rounded-0 mt-4 trans-3 mb-2 py-2 px-4 ${
+									activeSize ? 'bg-black c-white' : 'bg-gray c-white'
+								}`}
 								onClick={() => addToCart(productData, activeSize)}
+								disabled={!activeSize}
+								title={!activeSize ? "Please select a size first" : ""}
 								>
-									ADD TO CART
+									{activeSize ? "ADD TO CART" : "SELECT SIZE FIRST"}
 								</button>
 							) : (
 								<button 
@@ -209,6 +254,16 @@ const ProductDetails = () => {
 								}}
 								>
 									LOGIN TO ADD TO CART
+								</button>
+							)}
+
+							{/* Buy Now Button */}
+							{user && activeSize && (
+								<button 
+								className="btn rounded-0 bg-success c-white mt-2 trans-3 mb-2 py-2 px-4 w-100"
+								onClick={() => handleBuyNow(productData, activeSize)}
+								>
+									BUY NOW
 								</button>
 							)}
 							{/* Product Description and Reviews */}
