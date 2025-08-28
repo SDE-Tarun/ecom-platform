@@ -68,8 +68,8 @@ npm run dev
 ## 🔍 Troubleshooting:
 
 **If you still get CORS error:**
-- Make sure backend is running on port 5000
-- Check if you see "Server running on 5000" in backend terminal
+- Make sure backend is running on port 5001
+- Check if you see "Server running on 5001" in backend terminal
 
 **If you get "Failed to create order":**
 - Check your Razorpay keys are correct
